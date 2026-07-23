@@ -1,0 +1,12 @@
+> nebula-editor@0.0.0 build
+> tsc -b && vite build
+
+vite v8.1.5 building client environment for production...
+transforming...✓ 53 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.46 kB │ gzip:  0.30 kB
+dist/assets/index-BLQc2--W.css    7.27 kB │ gzip:  1.97 kB
+dist/assets/index-PZoNPC3r.js   222.97 kB │ gzip: 68.56 kB
+
+✓ built in 227ms
