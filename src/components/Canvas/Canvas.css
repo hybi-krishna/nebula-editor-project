@@ -1,0 +1,41 @@
+.canvas {
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    position: relative;
+
+    background-color: #0f172a;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 0);
+    background-size: 28px 28px;
+}
+
+.world {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: visible;
+    left: 0;
+    top: 0;
+    transform-origin: 0 0;
+}
+
+.keyboard-marquee-tip {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100000;
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.canvas:focus-visible {
+    outline: none;
+}
