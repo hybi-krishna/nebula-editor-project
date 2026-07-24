@@ -21,6 +21,9 @@ export default function TaskNode({ id }: Props) {
     const [titleInput, setTitleInput] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
 
+    // useEffect is required to imperatively focus and select the title input after it mounts.
+    // This is a DOM side effect that cannot be expressed as derived state or an event handler,
+    // because the input element does not exist in the DOM until isEditing becomes true.
     useEffect(() => {
         if (isEditing && inputRef.current) {
             inputRef.current.focus();
@@ -60,7 +63,7 @@ export default function TaskNode({ id }: Props) {
             aria-label={`Task node: ${taskNode.title}, ${taskNode.completed ? "completed" : "incomplete"}`}
             aria-selected={selected}
             onMouseDown={(e) => {
-                if (e.ctrlKey || e.metaKey || e.shiftKey) {
+                if (e.shiftKey) {
                     selectionActions.toggle(id);
                 } else {
                     selectionActions.selectSingle(id);

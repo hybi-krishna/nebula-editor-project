@@ -12,7 +12,10 @@ export default function HistoryPanel() {
         return historyActions.getTree();
     });
 
-    // Close panel when clicking outside of it
+    // useEffect is required to register a document-level mousedown listener for click-outside detection.
+    // This cannot be an event handler on the panel itself because clicks outside the panel do not bubble
+    // to it. It cannot be derived state because detecting an external DOM click is an imperative side effect.
+    // The listener is conditionally registered only while the panel is open to avoid unnecessary overhead.
     useEffect(() => {
         if (!isOpen) return;
 

@@ -130,7 +130,10 @@ npm run build
 | Shortcut | Action |
 |---|---|
 | Space + Drag / Middle Mouse | Pan canvas |
-| Scroll Wheel | Zoom |
+| Ctrl/Cmd + Arrow Keys | Pan canvas via keyboard |
+| Scroll Wheel | Zoom canvas |
+| + / = or - | Zoom canvas via keyboard |
+| L | Connect 2 selected nodes (Shift+L for 'No' port on Decision node) |
 | Ctrl/Cmd + A | Select all nodes |
 | Ctrl/Cmd + D | Duplicate selected nodes |
 | Ctrl/Cmd + Z | Undo |

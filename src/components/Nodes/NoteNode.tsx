@@ -25,6 +25,9 @@ export default function NoteNode({ id }: Props) {
     const [draft, setDraft] = useState("");
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+    // useEffect is required to imperatively focus and select the textarea after it mounts.
+    // This is a DOM side effect that cannot be expressed as derived state or an event handler,
+    // because the textarea element does not exist in the DOM until editing becomes true.
     useEffect(() => {
         if (editing && textareaRef.current) {
             textareaRef.current.focus();

@@ -21,6 +21,33 @@ export function useKeyboard() {
                 return;
             }
 
+            if (e.key.toLowerCase() === "l") {
+                const state = appStore.getState();
+                if (state.selection.nodeIds.length === 2) {
+                    e.preventDefault();
+                    const sourceId = state.selection.nodeIds[0];
+                    const targetId = state.selection.nodeIds[1];
+                    const sourceNode = state.nodes[sourceId!];
+                    if (sourceNode) {
+                        historyActions.begin();
+
+                        let sourcePort: "yes" | "no" | undefined = undefined;
+                        if (sourceNode.type === "decision") {
+                            sourcePort = e.shiftKey ? "no" : "yes";
+                        }
+
+                        actions.addEdge({
+                            id: crypto.randomUUID(),
+                            source: sourceId!,
+                            target: targetId!,
+                            sourcePort,
+                        });
+                        historyActions.end("Connect Nodes");
+                    }
+                }
+                return;
+            }
+
             const target = e.target as HTMLElement;
 
             if (

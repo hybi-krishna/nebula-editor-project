@@ -9,6 +9,7 @@ import { inputState } from "../../store/inputState";
 import EdgeLayer from "../Edges/EdgeLayer";
 import { connectionActions } from "../../store/connectionActions";
 import { presenceStore } from "../../store/presenceStore";
+import { viewportActions } from "../../store/viewportActions";
 
 interface Props {
     children: React.ReactNode;
@@ -34,6 +35,32 @@ export default function Canvas({ children }: Props) {
             target instanceof HTMLTextAreaElement ||
             target.isContentEditable
         ) {
+            return;
+        }
+        // Keyboard Zoom
+        if (e.key === "+" || e.key === "=") {
+            e.preventDefault();
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            viewportActions.zoomAt(cx, cy, -1); // Zoom in
+            return;
+        }
+        if (e.key === "-") {
+            e.preventDefault();
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            viewportActions.zoomAt(cx, cy, 1); // Zoom out
+            return;
+        }
+
+        // Keyboard Pan
+        if ((e.ctrlKey || e.metaKey) && ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
+            e.preventDefault();
+            const panStep = 50;
+            if (e.key === "ArrowLeft") viewportActions.move(panStep, 0);
+            else if (e.key === "ArrowRight") viewportActions.move(-panStep, 0);
+            else if (e.key === "ArrowUp") viewportActions.move(0, panStep);
+            else if (e.key === "ArrowDown") viewportActions.move(0, -panStep);
             return;
         }
 
