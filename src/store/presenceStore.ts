@@ -126,34 +126,32 @@ export const presenceStore = {
             setInterval(() => {
                 const state = appStore.getState();
                 const nodeIds = Object.keys(state.nodes);
-                
-                // Alice moves and selects
-                if (peers["mock-alice"]) {
-                    const aliceNodeId = nodeIds[Math.floor(Math.random() * nodeIds.length)];
-                    const node = aliceNodeId ? state.nodes[aliceNodeId] : null;
-                    const randomX = (node ? node.position.x : 400) + (Math.random() * 100 - 50);
-                    const randomY = (node ? node.position.y : 200) + (Math.random() * 100 - 50);
-                    
-                    peers["mock-alice"] = {
-                        ...peers["mock-alice"]!,
-                        cursor: { x: randomX, y: randomY },
-                        selectedNodeIds: node && Math.random() > 0.4 ? [node.id] : [],
-                    };
-                }
 
-                // Bob moves and selects
-                if (peers["mock-bob"]) {
-                    const bobNodeId = nodeIds[Math.floor(Math.random() * nodeIds.length)];
-                    const node = bobNodeId ? state.nodes[bobNodeId] : null;
-                    const randomX = (node ? node.position.x : 600) + (Math.random() * 100 - 50);
-                    const randomY = (node ? node.position.y : 400) + (Math.random() * 100 - 50);
-                    
-                    peers["mock-bob"] = {
+                const aliceNodeId = nodeIds[Math.floor(Math.random() * nodeIds.length)];
+                const aliceNode = aliceNodeId ? state.nodes[aliceNodeId] : null;
+                const aliceX = (aliceNode ? aliceNode.position.x : 400) + (Math.random() * 100 - 50);
+                const aliceY = (aliceNode ? aliceNode.position.y : 200) + (Math.random() * 100 - 50);
+
+                const bobNodeId = nodeIds[Math.floor(Math.random() * nodeIds.length)];
+                const bobNode = bobNodeId ? state.nodes[bobNodeId] : null;
+                const bobX = (bobNode ? bobNode.position.x : 600) + (Math.random() * 100 - 50);
+                const bobY = (bobNode ? bobNode.position.y : 400) + (Math.random() * 100 - 50);
+
+                // Create a brand new peers object so useSyncExternalStore detects
+                // a reference change and triggers a re-render for cursor movement.
+                peers = {
+                    ...peers,
+                    "mock-alice": {
+                        ...peers["mock-alice"]!,
+                        cursor: { x: aliceX, y: aliceY },
+                        selectedNodeIds: aliceNode && Math.random() > 0.4 ? [aliceNode.id] : [],
+                    },
+                    "mock-bob": {
                         ...peers["mock-bob"]!,
-                        cursor: { x: randomX, y: randomY },
-                        selectedNodeIds: node && Math.random() > 0.4 ? [node.id] : [],
-                    };
-                }
+                        cursor: { x: bobX, y: bobY },
+                        selectedNodeIds: bobNode && Math.random() > 0.4 ? [bobNode.id] : [],
+                    },
+                };
 
                 this.notify();
             }, 2000);
