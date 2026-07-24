@@ -1,15 +1,30 @@
 import "./HistoryPanel.css";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { historyActions } from "../../store/historyActions";
 import { useStore } from "../../store/useStore";
 
 export default function HistoryPanel() {
     const [isOpen, setIsOpen] = useState(false);
+    const panelRef = useRef<HTMLDivElement>(null);
     
     // Subscribe to state changes so the panel re-renders when history tree commits/undos
     const tree = useStore(() => {
         return historyActions.getTree();
     });
+
+    // Close panel when clicking outside of it
+    useEffect(() => {
+        if (!isOpen) return;
+
+        function onMouseDown(e: MouseEvent) {
+            if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+                setIsOpen(false);
+            }
+        }
+
+        document.addEventListener("mousedown", onMouseDown);
+        return () => document.removeEventListener("mousedown", onMouseDown);
+    }, [isOpen]);
 
     if (!isOpen) {
         return (
@@ -51,7 +66,7 @@ export default function HistoryPanel() {
     }
 
     return (
-        <div className="history-panel" role="complementary" aria-label="Branching history panel">
+        <div ref={panelRef} className="history-panel" role="complementary" aria-label="Branching history panel">
             <div className="history-panel-header">
                 <h3>Undo Tree</h3>
                 <button onClick={() => setIsOpen(false)} aria-label="Close History Tree Panel">×</button>
